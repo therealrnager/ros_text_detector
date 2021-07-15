@@ -1,0 +1,5 @@
+<launch>
+	<!-- text detection launch file -->
+	<node pkg="ros_text_detector" type="text_detection.py" name="text_detection" output="screen">
+	</node>
+</launch>
