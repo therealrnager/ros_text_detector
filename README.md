@@ -16,7 +16,7 @@ To run the program, run `roslaunch ros_text_detector text_detection.launch`
 
 - If you wish to change the publisher or subscriber topic, open image\_text\_detection.py. The ROS publisher is found on line 21, and the ROS subscriber is found on line 167.
 ### Performance
-Depending on the system running the program, text detection of each frame may take anywhere from 0.5 to 1.5 seconds. On a 1.5 second system, the program and video display will be delayed by approxametely 10 seconds (e.g. a movement of the robot camera will show up on the video display ~10 seconds after the movement occurs). 
+Depending on the system running the program, text detection of each frame may take anywhere from 0.5 to 1.5 seconds. On a 1.5 second system, the program and video display will be delayed by approximately 10 seconds (e.g. a movement of the robot camera will show up on the video display ~10 seconds after the movement occurs). 
 
 
 
