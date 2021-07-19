@@ -41,8 +41,11 @@ def camera_callback(data):
 
 
 	# load the input image and grab the image dimensions
-	image = cv_image
-	orig = image.copy()
+	initial_image = cv_image
+	orig = initial_image.copy()
+	crop_edge_x = 320
+	crop_edge_y = 180
+	image = orig_image[crop_edge_y:720 - crop_edge_y,crop_edge_x:1280 - crop_edge_x]
 	(H, W) = image.shape[:2]
 
 	# set the new width and height and then determine the ratio in change
@@ -146,10 +149,10 @@ def camera_callback(data):
 		endY = int(endY * rH)
 
 		# draw the bounding box on the image
-		cv2.rectangle(orig, (startX, startY), (endX, endY), (0, 255, 0), 2)
+		cv2.rectangle(orig, (crop_edge_x + startX, crop_edge_y + startY), (crop_edge_x + endX, crop_edge_y + endY), (0, 255, 0), 2)
 
 		#publish bounding box coordinates
-		foo.data =[startX, startY, endX, endY]
+		foo.data =[crop_edge_x + startX, crop_edge_y + startY, crop_edge_x + endX, crop_edge_y + endY]
 		pub.publish(foo)
 
 
