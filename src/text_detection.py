@@ -45,7 +45,7 @@ def camera_callback(data):
 	orig = initial_image.copy()
 	crop_edge_x = 320
 	crop_edge_y = 180
-	image = orig_image[crop_edge_y:720 - crop_edge_y,crop_edge_x:1280 - crop_edge_x]
+	image = initial_image[crop_edge_y:720 - crop_edge_y,crop_edge_x:1280 - crop_edge_x]
 	(H, W) = image.shape[:2]
 
 	# set the new width and height and then determine the ratio in change
