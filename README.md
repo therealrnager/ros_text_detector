@@ -10,11 +10,11 @@ ros\_text\_detector is a ROS package that can detect text in images from robot c
 ### Usage
 Install the package from this repo by downloading it to your catkin workspace and running `catkin_make`, followed by `source devel/setup.bash`.
 
-Go to the scripts folder and open image\_text\_detection.py. Change `east_path_file` (line 30) to the correct location of the frozen\_east\_text\_detection.pb file in your system. 
+Go to the scripts folder and open image\_text\_detection.py. Change `east_path_file` (line 31) to the correct location of the frozen\_east\_text\_detection.pb file in your system. 
 
 To run the program, run `roslaunch ros_text_detector text_detection.launch`
 
-- If you wish to change the publisher or subscriber topic, open image\_text\_detection.py. The ROS publisher is found on line 21, and the ROS subscriber is found on line 166.
+- If you wish to change the publisher or subscriber topic, open image\_text\_detection.py. The ROS publisher is found on line 21, and the ROS subscriber is found on line 165.
 ### Performance
 Depending on the system running the program, text detection of each frame may take anywhere from 0.5 to 1.5 seconds. On a 1.5 second system, the program and video display will be delayed by approximately 10 seconds (e.g. a movement of the robot camera will show up on the video display ~10 seconds after the movement occurs). 
 
