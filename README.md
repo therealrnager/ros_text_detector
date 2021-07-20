@@ -17,7 +17,7 @@ To run the program, run `roslaunch ros_text_detector text_detection.launch`
 - If you wish to change the publisher or subscriber topic, open image\_text\_detection.py. The ROS publisher is found on line 21, and the ROS subscriber is found on line 178.
 - This branch has a cropping feature that is applied to the receiving image: If you wish to change the cropping specifications, refer to lines 57-59, where you can change how much is cropped. You MUST correctly change line 59 to the correct resolution that your images are received in. By default, the numbers are set to a 720p camera resolution, and the code crops 25% off each edge.
 ### Performance
-Depending on the system running the program, text detection of each frame may take anywhere from 0.5 to 1.5 seconds. On a 1.5 second system, the program and video display will be delayed by approximately 10 seconds (e.g. a movement of the robot camera will show up on the video display ~10 seconds after the movement occurs). 
+Depending on the system running the program, text detection of each frame may take anywhere from 0.5 to 1.5 seconds. On a 1.5 second system, the program and video display will be delayed by approximately 3 seconds (e.g. a movement of the robot camera will show up on the video display ~3 seconds after the movement occurs). 
 
 
 
