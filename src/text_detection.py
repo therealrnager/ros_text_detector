@@ -27,14 +27,13 @@ from imutils.object_detection import non_max_suppression
 import numpy as np
 import time
 
+#define neural network
 east_path_file = "/home/turtlebot/catkin_ws/src/ros_text_detector/src/frozen_east_text_detection.pb"
+global net
+net = cv2.dnn.readNet(east_path_file)
 
 #create cvBridge to help convert image to an image compatible with openCV
 bridge_object = CvBridge()
-
-#define neural network
-global net
-net = cv2.dnn.readNet(east_path_file)
 
 def camera_callback(data):
 	global net
