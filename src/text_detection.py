@@ -27,12 +27,23 @@ from imutils.object_detection import non_max_suppression
 import numpy as np
 import time
 
-east_path_file = "/home/turtlebot/catkin_ws/src/ros_text_detector/src/frozen_east_text_detection.pb"
-
 #create cvBridge to help convert image to an image compatible with openCV
 bridge_object = CvBridge()
 
+global finished, subscriber, net
+finished = False
+subscriber = None
+
+#initialize neural network
+east_path_file = "/home/turtlebot/catkin_ws/src/ros_text_detector/src/frozen_east_text_detection.pb"
+net = cv2.dnn.readNet(east_path_file)
+
 def camera_callback(data):
+	global finished, subscriber, net
+	if finished:
+		return
+	
+
 	try:
 		# We select bgr8 because its the OpneCV encoding by default
 		cv_image = bridge_object.imgmsg_to_cv2(data, desired_encoding="bgr8")
@@ -41,11 +52,12 @@ def camera_callback(data):
 
 
 	# load the input image and grab the image dimensions
-	initial_image = cv_image
-	orig = initial_image.copy()
+	orig_image = cv_image
+	orig = orig_image.copy()
 	crop_edge_x = 320
 	crop_edge_y = 180
-	image = initial_image[crop_edge_y:720 - crop_edge_y,crop_edge_x:1280 - crop_edge_x]
+	image = orig_image[crop_edge_y:720 - crop_edge_y,crop_edge_x:1280 - crop_edge_x]
+	#cv2.imshow("cropped",image)
 	(H, W) = image.shape[:2]
 
 	# set the new width and height and then determine the ratio in change
@@ -68,8 +80,6 @@ def camera_callback(data):
 
 	# load the pre-trained EAST text detector
 	print("[INFO] loading EAST text detector...")
-	#net = cv2.dnn.readNet(args["east"])
-	net = cv2.dnn.readNet(east_path_file)
 
 	# construct a blob from the image and then perform a forward pass of
 	# the model to obtain the two output layer sets
@@ -154,23 +164,17 @@ def camera_callback(data):
 		#publish bounding box coordinates
 		foo.data =[crop_edge_x + startX, crop_edge_y + startY, crop_edge_x + endX, crop_edge_y + endY]
 		pub.publish(foo)
+		
 
-
+	subscriber.unregister()
+	finished = True
 	# show the output image
 	cv2.imshow("Text Detection", orig)
 	cv2.waitKey(1)
 	#cv2.destroyAllWindows()
 
-#not sure why queue_size isn't working or throttling incoming messages, which is what I want to happen
-#solved: many people have similar issue, must add buff_size. this reduces delay from 50s --> 9s
-image_sub = rospy.Subscriber("/camera/rgb/image_raw", Image, camera_callback,queue_size=1,buff_size=2**25)
-
-
-try:
-	rospy.spin()
-	
-	#print("hi")
-except KeyboardInterrupt:
-	print("Shutting down")
-
-cv2.destroyAllWindows()
+while not rospy.is_shutdown():
+	global finished, subscriber
+	subscriber = rospy.Subscriber("/camera/rgb/image_raw", Image, camera_callback,queue_size=1,buff_size=2**25)
+	rospy.sleep(0.5)
+	finished = False
