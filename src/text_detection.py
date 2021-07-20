@@ -32,7 +32,12 @@ east_path_file = "/home/turtlebot/catkin_ws/src/ros_text_detector/src/frozen_eas
 #create cvBridge to help convert image to an image compatible with openCV
 bridge_object = CvBridge()
 
+#define neural network
+global net
+net = cv2.dnn.readNet(east_path_file)
+
 def camera_callback(data):
+	global net
 	try:
 		# We select bgr8 because its the OpneCV encoding by default
 		cv_image = bridge_object.imgmsg_to_cv2(data, desired_encoding="bgr8")
@@ -65,8 +70,6 @@ def camera_callback(data):
 
 	# load the pre-trained EAST text detector
 	print("[INFO] loading EAST text detector...")
-	#net = cv2.dnn.readNet(args["east"])
-	net = cv2.dnn.readNet(east_path_file)
 
 	# construct a blob from the image and then perform a forward pass of
 	# the model to obtain the two output layer sets
